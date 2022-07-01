@@ -18,7 +18,7 @@ jobs:
       - name: build committed go code
         run:  |
           cat api/server-gen.go
-          go build api/server-gen.go
+          go build ./api
           ls -al api/
 
       ## regen, "github.com/gorilla/mux" import is now missing
@@ -33,6 +33,6 @@ jobs:
           ls -al api/
 
       - name: build
-        run:  go build api/server-gen.go
+        run:  go build ./api
 
 
