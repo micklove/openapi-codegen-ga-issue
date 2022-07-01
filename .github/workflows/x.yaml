@@ -28,6 +28,7 @@ jobs:
           go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@master
           oapi-codegen -version
           oapi-codegen  --config "gen-server.yaml" ./petstore.yaml 
+          oapi-codegen  --config "gen-models.yaml" ./petstore.yaml 
           cat api/server-gen.go
           ls -al api/
 
