@@ -1,0 +1,37 @@
+name: "test open api"
+on:
+  push:
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    env:
+      GIT_TERMINAL_PROMPT: 1
+    steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.18.3" # The Go version to download and use
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      ## build committed version (which already has "github.com/gorilla/mux" import)
+      - name: build committed go code
+        run:  |
+          cat api/server-gen.go
+          go build api/server-gen.go
+          ls -al api/
+
+      ## regen, "github.com/gorilla/mux" import is now missing
+
+      - name: regen go code
+        run:  |
+          go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@master
+          oapi-codegen -version
+          oapi-codegen  --config "gen-server.yaml" ./petstore.yaml 
+          cat api/server-gen.go
+          ls -al api/
+
+      - name: build
+        run:  go build api/server-gen.go
+
+
